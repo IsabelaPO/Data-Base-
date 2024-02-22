@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h2>Confirm Product Deletion</h2>
+{% endblock %}
+
+{% block content %}
+    <p><strong>SKU:</strong> {{ product['sku'] }}</p>
+    <p><strong>Name:</strong> {{ product['name'] }}</p>
+    <p><strong>Description:</strong> {{ product['description'] }}</p>
+    <p><strong>Price:</strong> {{ product['price'] }}</p>
+    <p><strong>EAN:</strong> {{ product['ean'] }}</p>
+
+{% if pay %}   
+<h3>Related Data from Pay</h3>
+<ul>
+  {% for pay in pay %}
+    <li>Order Number: {{ pay['order_no'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if process %}
+<h3>Related Data from Process</h3>
+<ul>
+  {% for process in process %}
+    <li>Order Number: {{ process['order_no'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if contains %}
+<h3>Related Data from Contains</h3>
+<ul>
+  {% for contains in contains %}
+    <li>Order Number: {{ contains['order_no'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if order_info %}
+<h3>Related Data from Orders</h3>
+<ul>
+  {% for order in order_info %}
+    <li>Order Number: {{ order['order_no'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if supplier %}   
+<h3>Related Data from Supplier</h3>
+<ul>
+  {% for supplier in supplier %}
+    <li>SKU: {{ supplier['sku'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if delivery %}   
+<h3>Related Data from Delivery</h3>
+<ul>
+  {% for delivery in delivery %}
+    <li>TIN: {{ delivery['tin'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<form action="{{ url_for('product_delete', sku=product['sku']) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product? You will also delete all rows associated with it');">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete Product">
+</form>
+
+<a href="{{ url_for('product_index') }}">Cancel</a>
+{% endblock %}

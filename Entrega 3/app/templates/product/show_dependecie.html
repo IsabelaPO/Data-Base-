@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{{ tin }}-Dependencies{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="POST" action="{{ url_for('supplier_edit', sku =sku,tin = tin )}}">
+    {% for dependency in dependencies %}
+      <p>
+        <strong>Address:</strong> {{ dependency['address'] }}
+      </p>
+      {% if not loop.last %}
+        <hr>
+      {% endif %}
+    {% endfor %}
+
+    <label for="confirmation">Are you sure you want to delete the dependencies?</label><br>
+        <div id="check">
+            <button type="radio" id="confirmation" name="confirmation" value="yes">Yes</button>
+            <button type="radio" id="confirmation" name="confirmation" value="no" checked>No</button>
+        </div>
+    <br>
+  </form>
+{% endblock %}

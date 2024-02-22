@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Add New Supplier-{{sku}}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form action="{{ url_for('supplier_add',sku=sku) }}" method="POST">
+      <label for="tin">TIN:</label>
+      <input type="text" id="tin" name="tin"  maxlength="20" required>
+      {% if error  %}
+        <div class="error">{{ error }}</div>
+      {% endif %}
+      <br>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name"  maxlength="200" required>
+      <br>
+      <label for="description">Address:</label>
+      <textarea id="address" name="address"  placeholder="Ex: Rua dos labos 2613-123, Leiria" required></textarea>
+    <br>
+    <button type="submit" value="Register">Register</button>
+  </form>
+  
+{% endblock %}

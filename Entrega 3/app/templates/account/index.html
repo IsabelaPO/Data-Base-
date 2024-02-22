@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Customers{% endblock %}</h1>
+  <a class="action" href="{{ url_for('customer_add',) }}">Add New Customer</a>
+{% endblock %}
+
+{% block content %}
+  {% for customer in customers %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ customer['name'] }}</h1>
+          <div class="about">email: {{ customer['email'] }}</div>
+          <div class="about">phone: {{ customer['phone'] }}</div>
+        </div>
+        <a class="action" href="{{ url_for('make_order', cust_no=customer['cust_no']) }}">Make Order</a>
+        <a class="action" href="{{ url_for('customer_profile', cust_no=customer['cust_no']) }}">Profile</a>
+      </header>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+
+    <div class="pagination">
+      {% if page > 1 %}
+        <a class="page-link" href="{{ url_for('customer_index', page=page-1) }}">Previous</a>
+      {% endif %}
+      
+      {% for num in range(1, total_pages + 1) %}
+        {% if num == page %}
+          <span class="page-link current-page">{{ num }}</span>
+        {% else %}
+          <a class="page-link" href="{{ url_for('customer_index', page=num) }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      
+      {% if page < total_pages %}
+        <a class="page-link" href="{{ url_for('customer_index', page=page+1) }}">Next</a>
+      {% endif %}
+    </div>
+{% endblock %}

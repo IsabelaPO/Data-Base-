@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{{ product['name'] }}-{{ product['sku'] }}{% endblock %}</h1>
+  <a class="action" href="{{ url_for('supplier_edit',sku=product['sku']) }}">Edit Supplier</a>
+{% endblock %}
+
+{% block content %}
+  <h2>Product Information</h2>
+  <p><strong>SKU:</strong> {{ product['sku'] }}</p>
+  <p><strong>Name:</strong> {{ product['name'] }}</p>
+    <form action="{{ url_for('product_edit', sku = product['sku'] )}}" method="post">
+      <textarea name="description" rows="4" cols="50">{{ product['description'] }}</textarea><br><br>
+      <input type="submit" value="save description">
+    </form>
+
+  <h3>Price:</h3>
+    <form action="{{url_for('product_edit', sku = product['sku'])}}" method="post">
+      <input type="text" name="price" value="{{ product['price'] }}"><br><br>
+      <input type="submit" value="save price">
+    </form>
+  <h3>EAN:</h3>
+  <p>{{ product['ean'] }}</p>
+
+  {% if sucess %}
+        <p class="sucess">{{sucess}}</p>
+  {% endif %}
+  
+  <a href="{{ url_for('confirm_delete_p',sku=product['sku']) }}">Delete Product</a>
+  
+{% endblock %}

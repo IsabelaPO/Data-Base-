@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Make Order{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form action="{{url_for('make_order',cust_no = cust_no, cart=cart,page=page)}}" method="post">
+    {% for product in products %}
+      <article class="post">
+        <header>
+          <div>
+            <div class="product-name">
+              <h1>{{ product['name'] }}</h1>
+            </div>
+                
+            <div class="price">
+              <label for="price">Price:</label>
+              <span>{{ product['price'] }}$</span>
+            </div>
+                
+            <div class="description">
+              <label for="description">Description:</label>
+              <span>{{ product['description'] }}</span>
+            </div>
+            
+            <div class="quantity">
+              <label for="quantity">Quantity:</label>
+              <input type="number" name="{{ product['sku'] }}" value="{{ cart.get(product['sku'] or 0) }}" min="0">
+              <button type="submit" name="add" value="{{ product['sku'] }}">Add</button>
+            </div>
+          </div>
+        </header>
+      </article>
+      {% if not loop.last %}
+        <hr>
+      {% endif %}
+    {% endfor %}
+    <br>
+    <button type="submit" name = "checkout" onclick="return confirm('Are you sure you to make this order?');">Submit Order</button>
+  </form>
+  
+  <div class="pagination">
+    {% if page > 1 %}
+      <a class="page-link" href="{{ url_for('make_order', page=page-1, cust_no=cust_no,cart=cart) }}">Previous</a>
+    {% endif %}
+    
+    {% for num in range(1, total_pages + 1) %}
+      {% if num == page %}
+        <span class="page-link current-page">{{ num }}</span>
+      {% else %}
+        <a class="page-link" href="{{ url_for('make_order', page=num, cust_no=cust_no, cart=cart) }}">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+    
+    {% if page < total_pages %}
+      <a class="page-link" href="{{ url_for('make_order', page=page+1, cust_no=cust_no, cart=cart) }}">Next</a>
+    {% endif %}
+  </div>
+{% endblock %}

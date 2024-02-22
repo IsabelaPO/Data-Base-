@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Order {{ order_no }}{% endblock %}</h1>
+  <a class="action" href="{{ url_for('customer_profile',cust_no=cust_no) }}">Back</a>
+{% endblock %}
+
+{% block content %}
+  <h2>Order Details</h2>
+  <ul>
+    {% for item in contains %}
+      <li>{{ item.name }} - SKU: {{ item.sku }} - Quantity: {{ item.qty }} - Total Price: {{ item.total_p }}$</li>
+    {% endfor %}
+  </ul>
+
+  {% if paid %}
+    <p>Status: Paid</p>
+  {% else %}
+    <form method="post" action="{{ url_for('order_status', cust_no=cust_no, order_no=order_no) }}">
+      <p>Status: Unpaid</p>
+      <button type="submit" value="Pay" onclick="return confirm('Are you sure you want to pay this order?');">Pay</button>
+    </form>
+  {% endif %}
+{% endblock %}

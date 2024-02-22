@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Hello, {{ customer_info['name'] }} !{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between;">
+    <h2>Customer Information</h2>
+    <a href="{{ url_for('confirm_delete_c', cust_no=customer_info['cust_no']) }}">Delete Profile</a>
+</div>
+<div>
+    <p><strong>Customer Number:</strong> {{ customer_info['cust_no'] }}</p>
+    <p><strong>Name:</strong> {{ customer_info['name'] }}</p>
+    <p><strong>Email:</strong> {{ customer_info['email'] }}</p>
+    <p><strong>Phone:</strong> {{ customer_info['phone'] }}</p>
+    <p><strong>Address:</strong> {{ customer_info['address'] }}</p>
+</div>
+
+{% if customer_orders %}
+<h2>Orders</h2>
+<ul>
+    {% for order in customer_orders %}
+    <li>Order Number: <a class="action" href="{{ url_for('order_status', cust_no=customer_info['cust_no'], order_no=order['order_no'] ) }}">{{order['order_no']}}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

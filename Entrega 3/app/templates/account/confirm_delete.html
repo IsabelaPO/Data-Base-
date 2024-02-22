@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h2>Confirm Customer Deletion</h2>
+{% endblock %}
+
+{% block content %}
+    <p><strong>Customer Number:</strong> {{ customer_info['cust_no'] }}</p>
+    <p><strong>Name:</strong> {{ customer_info['name'] }}</p>
+    <p><strong>Email:</strong> {{ customer_info['email'] }}</p>
+    <p><strong>Phone:</strong> {{ customer_info['phone'] }}</p>
+    <p><strong>Address:</strong> {{ customer_info['address'] }}</p>
+
+{% if pay %}   
+<h3>Related Data from Pay</h3>
+<ul>
+  {% for pay in pay %}
+    <li>Customer Number: {{pay['cust_no'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if process %}
+<h3>Related Data from Process</h3>
+<ul>
+  {% for process in process %}
+    <li>Order Number: {{ process['order_no'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if contains %}
+<h3>Related Data from Contains</h3>
+<ul>
+  {% for contains in contains %}
+    <li>Order Number: {{ contains['order_no'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if order_info %}
+<h3>Related Data from Orders</h3>
+<ul>
+  {% for order in order_info %}
+    <li>Order Number: {{ order['order_no'] }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<form action="{{ url_for('customer_delete', cust_no=customer_info['cust_no']) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this profile? You will also delete all rows associated with it');">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete Profile">
+</form>
+
+<a href="{{ url_for('customer_index') }}">Cancel</a>
+{% endblock %}

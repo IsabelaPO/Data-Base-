@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Suppliers-{{sku}}{% endblock %}</h1>
+  <a class="action" href="{{ url_for('supplier_add',sku=sku) }}">Add Supplier</a>
+  <a class="action" href="{{ url_for('product_edit',sku=sku) }}">Back</a>
+{% endblock %}
+
+{% block content %}
+  {% for supplier in suppliers %}
+    <form action="{{ url_for('supplier_edit', sku =sku )}}" method="post">
+      <header>
+        <div>
+            <div class="supplier-name">
+              <h1>{{ supplier['name'] }}</h1>
+            </div>
+              
+            <div class="tin">
+                <label for="tin">TIN:</label>
+                <span>{{ supplier['tin'] }}</span>
+            </div>
+            
+            <div class="address">
+                <label for="address">Address:</label>
+                <span>{{ supplier['address'] }}</span>
+            </div>
+
+            <div class="contract_date">
+                <label for="contract_date">Contract Date:</label>
+                <span>{{ supplier['date'] }}</span>
+            </div>
+            <button type="submit" name = "delete" value="{{supplier['tin']}}" onclick="return confirm('Are you sure you want to delete this supplier?');">Delete</button>
+        </div>
+      </header>
+    </form>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+  <div class="pagination">
+    {% if page > 1 %}
+      <a class="page-link" href="{{ url_for('supplier_edit', page=page-1,sku=sku) }}">Previous</a>
+    {% endif %}
+    
+    {% for num in range(1, total_pages + 1) %}
+      {% if num == page %}
+        <span class="page-link current-page">{{ num }}</span>
+      {% else %}
+        <a class="page-link" href="{{ url_for('supplier_edit', page=num,sku=sku) }}">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+    
+    {% if page < total_pages %}
+      <a class="page-link" href="{{ url_for('supplier_edit', page=page+1,sku=sku) }}">Next</a>
+    {% endif %}
+  </div>
+{% endblock %}
